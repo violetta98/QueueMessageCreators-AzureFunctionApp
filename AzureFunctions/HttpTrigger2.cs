@@ -26,10 +26,10 @@ namespace QueueMessageCreators.AzureFunctions
             {
                 var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var users = JsonConvert.DeserializeObject<List<User>>(requestBody);
-                users.ForEach(user => user.SetPartitionAndRowKeys());
 
                 foreach(var user in users)
                 {
+                    user.SetPartitionAndRowKeys();
                     await table.ExecuteAsync(TableOperation.Insert(user));
                 }
 
